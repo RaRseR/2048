@@ -11,8 +11,8 @@ func init() {
 }
 
 const (
-	ScreenWidth  = 420
-	ScreenHeight = 600
+	ScreenWidth  = 360
+	ScreenHeight = 360
 	boardSize    = 4
 )
 
@@ -37,32 +37,32 @@ func NewGame() (*Game, error) {
 }
 
 // Layout implements ebiten.Game's Layout.
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+func (game *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return ScreenWidth, ScreenHeight
 }
 
 // Update updates the current game state.
-func (g *Game) Update() error {
-	g.input.Update()
-	if err := g.board.Update(g.input); err != nil {
+func (game *Game) Update() error {
+	game.input.Update()
+	if err := game.board.Update(game.input); err != nil {
 		return err
 	}
 	return nil
 }
 
 // Draw draws the current game to the given screen.
-func (g *Game) Draw(screen *ebiten.Image) {
-	if g.boardImage == nil {
-		w, h := g.board.Size()
-		g.boardImage = ebiten.NewImage(w, h)
+func (game *Game) Draw(screen *ebiten.Image) {
+	if game.boardImage == nil {
+		w, h := game.board.Size()
+		game.boardImage = ebiten.NewImage(w, h)
 	}
 	screen.Fill(backgroundColor)
-	g.board.Draw(g.boardImage)
+	game.board.Draw(game.boardImage)
 	op := &ebiten.DrawImageOptions{}
 	sw, sh := screen.Size()
-	bw, bh := g.boardImage.Size()
+	bw, bh := game.boardImage.Size()
 	x := (sw - bw) / 2
 	y := (sh - bh) / 2
 	op.GeoM.Translate(float64(x), float64(y))
-	screen.DrawImage(g.boardImage, op)
+	screen.DrawImage(game.boardImage, op)
 }
